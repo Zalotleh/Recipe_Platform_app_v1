@@ -1,0 +1,162 @@
+{% extends 'recipes/navbar_footer.html' %}
+{% load static %}
+
+{% block navbar_content %}
+ <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+	<link  rel="stylesheet" href="{% static '/css/store.css' %}">
+
+
+    <!-- CSS only -->
+        <div class="cart_container">
+            {% with total_items=cart|length %}
+              {% if total_items  %}
+                  <a href="{% url 'cart:cart_detail' %}">
+                        <img  class="cart_icon" src="{% static 'images/cart.png' %}">
+                  </a>
+
+                  <p class="cart-total">{{ total_items }}</p>
+
+                  {% else %}
+
+                  <a href="#">
+                        <img  class="cart_icon" src="{% static 'images/cart.png' %}">
+                  </a>
+
+                  <p class="cart_total" >0</p>
+
+              {% endif %}
+            {% endwith %}
+
+
+      </div>
+
+{% endblock navbar_content %}
+
+{% block content %}
+	<link  rel="stylesheet" href="{% static '/css/store.css' %}">
+
+
+{# new html#}
+
+    <div class="section-body">
+
+        {% if category %} {{ category.name }}
+        {% else %}
+        {% endif %}
+            <div class="vertical-nav" >
+                <ul style="background: linear-gradient(to right , black,#3d3d3d, #2a2929, #3d3d3d );;
+                font-size: 20px; width: 250px; border:#E34513FF solid 1px;
+                 border-radius: 9px;
+                 box-shadow: 0 5px 5px rgb(227,69,19); font-weight: bold;
+                    ">
+                    <h4 style="font-weight: bold; font-size: 30px; color: #E34513FF"><left>Category</left></h4>
+                    <li  {% if not category %} {% endif %}>
+                            <a style="color: white" href="{% url 'store:store_page' %}">All</a>
+                    </li>
+                {% for c in categories %}
+                    <li {%  if category.slug == c.slug %}{% endif %}>
+                        <a style="color: white" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="gallery-main" style="margin-left:25%;padding:1px 16px;height:1000px;">
+                <div class="Adventure" id="Adventure">
+                    <h2 style="color: #E34513FF; font-weight: bold">{% if category %} {{ category.name }}{% else %}Products{% endif %}</h2>
+
+                    <div class="gallery">
+                        {% for product in products %}
+                        <div class="image-holder">
+                            <a href="{{product.get_absolute_url}}">
+                       <img src="{% if product.image %} {{product.image.url}}
+                                 {% else %} {% static 'images/placeholder.png' %} {% endif %}"
+                            >
+                            <div class="desc">
+                                <h6 style="margin-top: 20px;"><strong>{{ product.name }}</strong></h6>
+                                Price : ${{product.price}}
+                                <br>
+
+                                <button>
+                                    <a  href="{{product.get_absolute_url}}">
+                                        View
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+            <br>
+
+        </div>
+
+
+    </body>
+
+
+
+
+
+
+
+{# end of ew html   #}
+{#    {% if category %} {{ category.name }}#}
+{#    {% else %}#}
+{#    {% endif %}#}
+{##}
+{##}
+{##}
+{#    <ul class="store_container">#}
+{##}
+{#    <li class=row_li">#}
+{#        <div id="sidebar">#}
+{##}
+{#                 <h3>Categories</h3>#}
+{#                    <ul>#}
+{#                        <li {% if not category %} class="selected" {% endif %}>#}
+{#                            <a href="{% url 'store:store_page' %}">All</a>#}
+{#                        </li>#}
+{#                        {% for c in categories %}#}
+{#                            <li {%  if category.slug == c.slug %} class="selected"{% endif %}>#}
+{#                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>#}
+{#                            </li>#}
+{#                        {% endfor %}#}
+{#                    </ul>#}
+{#        </div>#}
+{##}
+{#    </li>#}
+{#<li class="row_li">#}
+{#       <h1> {% if category %} {{ category.name }}{% else %}Products{% endif %}</h1>#}
+{#</li>#}
+{#        {% for product in products %}#}
+{##}
+{#            <li class=" product_cards">#}
+{#            <ul>#}
+{#            <li>#}
+{#            <div class="card" style="width: 18rem;">#}
+{#                <a href="{{product.get_absolute_url}}">#}
+{#                        <img class="thumbnail"#}
+{#                             src="{% if product.image %} {{product.image.url}}#}
+{#                                  {% else %} {% static 'images/placeholder.png' %} {% endif %}">#}
+{#                </a>#}
+{#                <div class = "box-element product">#}
+{#                    <h6><strong>{{ product.name }}</strong></h6>#}
+{#                    <hr>#}
+{#                    <a class="btn btn-outline-success" href="{{product.get_absolute_url}}">View</a>#}
+{#                    <h4 style="display: inline-block; float: right">${{product.price}}</h4>#}
+{##}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#            </li>#}
+{#            </ul>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+
+{% endblock content %}

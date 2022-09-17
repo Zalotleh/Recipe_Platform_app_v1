@@ -1,0 +1,40 @@
+{% extends 'recipes/navbar_footer.html' %}
+{% load static %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/css/categories_list.css/' %}">
+
+{#    <hr class="border_line1">#}
+    <h1>Recipe Categories</h1>
+    <hr class="border_line2">
+
+<ul class="recipe_container">
+              {% for item in cat_menu_list %}
+
+
+        <li class="images" >
+                        <div class ia="image">
+                            <a
+                                    href="{% url 'recipe:category' item %}"
+                                    class="card-link"
+                            >
+                                <h4 class="card-title">
+                                    <img src="{{  item.image.url}}" class="card-img" alt="...">
+                                </h4>
+                            </a>
+                            <div class="card-body">
+                                <a href="{% url 'recipe:category' item %}"
+                                   class="card-link">
+                                    <h3 class="card-title">
+                                    {{ item }}
+                                </h3>
+                                </a>
+                            </div>
+                        </div>
+        </li>
+
+        {% endfor %}
+</ul>
+
+{% endblock content %}

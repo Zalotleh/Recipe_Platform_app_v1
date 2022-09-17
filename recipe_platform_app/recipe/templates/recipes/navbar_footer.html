@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% block title %}{% endblock title %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{% static '/css/navbar_footer.css' %}" />
+
+  </head>
+<div class="nf_flex-wrapper">
+<header>
+    <!-- navbar -->
+    <nav class = "nf_main-nav">
+      <ul>
+            <li class="nf_logo">
+                <div class = "nf_navigation-top">
+                <a href = "{% url 'recipe:home_page' %}" class = "navigationbar-brand">
+                  YUM<span>OO!</span>
+                </a>
+                <button type = "button" class = "navigationbar-toggler">
+                  <i class = "fas fa-bars"></i>
+                </button>
+              </div>
+            </li>
+          <li class="nf_search_bar_box">
+              <form class="nf_d-flex"  method="POST" action="{% url 'recipe:search_page' %}">
+                {% csrf_token %}
+                <input class="nf_search_bar_input"
+                type="search" placeholder="Search" aria-label="Search" name="searched">
+                <button class="nf_search_bar_btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i>
+</button>
+            </form>
+          </li>
+            <li>
+               <ul class="nf_menu-items">
+                  <li >
+                    <a href = "{% url 'recipe:home_page' %}" class = "nf_navigation-link">home</a>
+                  </li>
+                  <li >
+                    <a href = "{% url 'recipe:about' %}" class = "nf_navigation-link">about</a>
+                  </li>
+                  <li >
+                    <a href = "{% url 'recipe:recipe_list' %}" class = "nf_navigation-link">Recipes list</a>
+                  </li>
+                  <li >
+                    <a href = "{% url 'recipe:category_list' %}" class = "nf_navigation-link">Categories</a>
+                  </li>
+               {% if request.user.is_authenticated %}
+                  <li >
+                    <a href = "{% url 'recipe:create_recipe' %}" class = "nf_navigation-link">Upload Video</a>
+                  </li>
+               {% endif %}
+                  <li >
+                    <a href = "{% url 'store:store_page' %}" class = "nf_navigation-link">Shop</a>
+                  </li>
+                    <li>
+
+                        {% block navbar_content %}
+                        {% endblock navbar_content %}
+
+
+                    </li>
+                  <li>
+                        <div class="nf_dropdown">
+                          {% if user.is_authenticated %}
+
+                               <button class="nf_dropbtn" type="button" aria-haspopup="true" aria-expanded="false">
+                                                         <i class="fa fa-user" aria-hidden="true"></i>
+
+                               {% if user.first_name %}  Hello, {{ user.first_name }}!
+                                {% else %}Hello, {{ user.username }}!{% endif %}
+                                </button>
+                              <div class="nf_dropdown-content">
+                                      <a  href="{% url 'user:user_profile' %}">Profile</a>
+                                      <a  href="{% url 'user:password_change' %}">Change password</a>
+                                      <a  href="{% url 'user:logout' %}">Logout</a>
+                              </div>
+                          {% else %}
+                                    <button class="nf_dropbtn" type="button" aria-haspopup="true" aria-expanded="false">
+                                     Sign in
+                                    </button>
+                                  <div class="nf_dropdown-content">
+                                         <a  href="{% url 'user:login' %}">Login</a>
+                                         <a  href="{% url 'user:register' %}">Register</a>
+                                  </div>
+                          {% endif %}
+                        </div>
+                  </li>
+               </ul>
+        </li>
+
+      </ul>
+
+    </nav>
+    <!-- end of navbar -->
+</header>
+
+      {% block content %}{% endblock content %}
+
+<!-- footer -->
+
+
+ <footer class="nf_footer-section">
+     <hr class="nf_border border-white">
+
+        <div class="nf_group-1">
+            <div class="nf_box">
+                <figure class="nf_footer-logo" >
+              <div class = "nf_navigation-top">
+                <a href = "{% url 'recipe:home_page' %}" class = "navigationbar-brand">
+                  YUM<span>OO!</span>
+                </a>
+                <button type = "button" class = "navigationbar-toggler">
+                  <i class = "fas fa-bars"></i>
+                </button>
+              </div>
+            </li>
+                </figure>
+            </div>
+            <div class="nf_box">
+                <h2>Contact info</h2>
+                <p>example@example.com</p>
+                <h2>Telephone number: </h2>
+                <p>00345817262</p>
+
+            </div>
+            <div class="nf_box">
+                <h2>Social Media</h2>
+                <div class="nf_red-social">
+                    <a href="#" ><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="fa fa-instagram"></a>
+                    <a href="#" class="fa fa-twitter"></a>
+                    <a href="#" class="fa fa-youtube"></a>
+                </div>
+            </div>
+        </div>
+        <div class="nf_group-2">
+            <small>&copy; 2022 <b>YUMOO!</b> - Copy Rights.</small>
+        </div>
+ </footer>
+</div>

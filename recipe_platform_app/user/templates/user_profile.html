@@ -1,0 +1,140 @@
+{% extends "recipes/navbar_footer.html" %}
+{% load static %}
+
+{% block title %}<title> Profile YUMOO!</title>{% endblock title %}
+
+
+{% block content %}
+    <link rel="stylesheet" href="{% static '/css/profile.css' %}" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{#    new html#}
+<body>
+  <div class="wrapper">
+
+    <div class="card">
+      <div class="img">
+        <img src="{{ user.profile.avatar.url }}" alt="Image" width="100%">
+      </div>
+
+      <div class="cnt">
+        <div class="name">{{ user.profile.first_name }} {{ user.profile.last_name }}</div>
+        <div class="txt">{{ user.profile.biography}}
+      </div>
+        <i class="fas fa-thumbtack"></i>
+        <strong>{{ user.profile.country_of_origin}}</strong>
+
+        <div class="card-inf">
+          <div class="item">
+            <div class="title">3.2M</div>
+            <div class="txt">Folowers</div>
+          </div>
+
+          <div class="item">
+            <div class="title">56</div>
+            <div class="txt">Folowing</div>
+          </div>
+
+          <div class="item">
+            <div class="title">1.2K</div>
+            <div class="txt">Articles</div>
+          </div>
+
+          <div class="item">
+            <div class="title">1.1K</div>
+            <div class="txt">Works</div>
+          </div>
+        </div>
+
+        <div class="card-social">
+          <a href="{{ user.profile.facebook_url }}" class="facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="{{ user.profile.twitter_url }}" class="twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="{{ user.profile.instagram_url }}" class="instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+            <a href="{{ user.profile.website_url }}" class="youtube">
+            <i class="fab fa-youtube"></i>
+          </a>
+
+        </div>
+
+        <div class="card-button">
+          <button class="btn-blue">Message</button>
+          <button class="btn-orange">Follow</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+{#  new html end   #}
+
+
+{#    <div class="row my-3 p-3">#}
+{#        <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer; width: 100px"/>#}
+{#    </div>#}
+{#    {% if user_form.errors %}#}
+{#        <div class="alert alert-danger alert-dismissible" role="alert">#}
+{#            <div id="form_errors">#}
+{#                {% for key, value in user_form.errors.items %}#}
+{#                    <strong>{{ value }}</strong>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#            <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                <span aria-hidden="true">&times;</span>#}
+{#            </button>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    <div class="form-content">#}
+{#        <form method="post" enctype="multipart/form-data">#}
+{#            {% csrf_token %}#}
+{#            <div class="form-row">#}
+{#                <div class="col-md-5">#}
+{#                    <div class="form-group">#}
+{#                        <label class="small mb-1">Username:</label>#}
+{#                        {{ user_form.username }}#}
+{#                        <label class="small mb-1">Email:</label>#}
+{#                        {{ user_form.email }}#}
+{#                    </div>#}
+{#                    <div class="form-group">#}
+{#                        <a href="{% url 'user:password_change' %}">Change Password</a>#}
+{#                        <hr>#}
+{#                        <label class="small mb-1">First Name:</label>#}
+{#                        {{ profile_form.first_name }}#}
+{#                        <label class="small mb-1">Last Name:</label>#}
+{#                        {{ profile_form.last_name }}#}
+{#                        <label class="small mb-1">Website:</label>#}
+{#                        {{ profile_form.website_url }}#}
+{#                        <label class="small mb-1">Facebook Page:</label>#}
+{#                        {{ profile_form.facebook_url }}#}
+{#                        <label class="small mb-1">Twitter:</label>#}
+{#                        {{ profile_form.twitter_url }}#}
+{#                        <label class="small mb-1">Instagram:</label>#}
+{#                        {{ profile_form.instagram_url }}#}
+{#                        <label class="small mb-1">Pinterest:</label>#}
+{#                        {{ profile_form.pinterest_url }}#}
+{#                        <label class="small mb-1">Country:</label>#}
+{#                        {{ profile_form.country_of_origin }}#}
+{#                        <hr>#}
+{#                        <label class="small mb-1">Change Avatar:</label>#}
+{#                        {{ profile_form.avatar }}#}
+{#                        <hr>#}
+{##}
+{#                    </div>#}
+{#                    <label class="small mb-1">Bio:</label> {{ profile_form.biography }}#}
+{#                </div>#}
+{#            </div>#}
+{#            <br><br>#}
+{#            <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>#}
+{#            <button type="reset" class="btn btn-dark btn-lg">Reset</button>#}
+{#        </form>#}
+{#    </div>#}
+
+{% endblock content %}

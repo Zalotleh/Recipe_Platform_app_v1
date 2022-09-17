@@ -1,0 +1,103 @@
+{% extends "recipes/navbar_footer.html" %}
+{% load static %}
+{% load embed_video_tags %}
+{% block title %}<title> Recipe Card Food</title> {% endblock title %}
+
+<!-- -->
+{% block content %}
+    <link rel="stylesheet" href="{% static '/css/recipes_list.css' %}" />
+
+{# new html #}
+
+  <link
+   rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+   integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+   crossorigin="anonymous"
+  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+ <body class="recipe_body">
+ {% for recipe in recipes %}
+  <div class="recipe_container">
+
+      {% if recipe.external_video %}
+            {% video recipe.external_video as my_video %}
+            <div class="recipe_video">
+                {% video my_video "medium" %}
+                {% endvideo %}
+          </div>
+       {% elif recipe.video %}
+
+            <video class="recipe_video"
+                   muted playsinline onmouseover="this.play()"
+                   onmouseout="this.pause();this.currentTime=0;"
+                         src="{{ recipe.video.url }}" type="video/mp4">
+            </video>
+      {% endif %}
+
+   <div class="recipe_container_text">
+       <p class="recipe_p">
+
+          <a class="recipe_a" href="{% url 'recipe:category' recipe.category %}" >
+              {{ recipe.category }}</a>
+
+    </p>
+    <h1 class="recipe_h1">{{ recipe.title }}</h1>
+       <br>
+{#    <div class="recipe_container_text_star">#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#    </div>#}
+    <p class="recipe_p">
+       By: <a class="recipe_a" href="#" >
+              {{ recipe.author.profile.first_name }} {{ recipe.author.profile.last_name }}</a>
+    </p>
+              <hr class="border_line">
+       <br>
+
+       <p class="recipe_p">
+          {{ recipe.description }}
+       </p>
+       <br>
+       <hr class="border_line">
+
+
+    <div class="recipe_container_text_timing">
+     <div class="recipe_container_text_timing_time">
+      <h2 class="recipe_h2">Hands-on Time</h2>
+      <p class="recipe_p">{{ recipe.preparation_time }}</p>
+     </div>
+     <div class="recipe_container_text_timing_time">
+      <h2 class="recipe_h2">Total Time</h2>
+      <p>{{ recipe.total_time }}</p>
+     </div>
+     <div class="recipe_container_text_timing_time">
+      <h2 class="recipe_h2">Upload Date</h2>
+      <p class="recipe_p">{{ recipe.upload_date |date:"F d, Y"}}</p>
+     </div>
+    </div>
+
+
+
+        <button class="recipe_btn">
+            <a href="{% url 'recipe:recipe_detail' recipe.pk %}" >
+                view recipe
+                <i class=" recipe_1 fa fa-arrow-right"></i>
+            </a>
+        </button>
+   </div>
+  </div>
+
+ {% endfor %}
+ </body>
+
+
+{#    end of new html#}
+
+{% endblock content %}

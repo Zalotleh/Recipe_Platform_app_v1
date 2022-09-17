@@ -1,0 +1,253 @@
+{% extends "recipes/navbar_footer.html" %}
+{% load static %}
+{% load social_share %}
+{% load hitcount_tags %}
+{% load embed_video_tags %}
+
+
+<!-- -->
+{% block content %}
+
+{# new html#}
+
+    <link rel="stylesheet" href="{% static '/css/recipe_detail.css' %}" />
+    <link
+   rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+   integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+   crossorigin="anonymous"
+  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+ <body class="recipe_body">
+    <div class="recipe_container">
+      {% if object.video and object.external_video %}
+                <video  class="recipe_video" controls>
+                    <source src="{{ object.video.url }}" type="video/mp4">
+                </video>
+                <br>
+                <br>
+                {% video object.external_video 'medium' %}
+            {% elif object.video %}
+                <video class="recipe_video" controls>
+                    <source src="{{ object.video.url }}" type="video/mp4">
+                </video>
+            {% elif object.external_video %}
+                {% video object.external_video 'medium' %}
+            {% endif %}
+
+   <div class="recipe_container_text">
+       <p class="recipe_p">
+
+          <a class="recipe_a" href="{% url 'recipe:category' object.category %}" >
+              {{ object.category }}</a>
+
+    </p>
+    <h1 class="recipe_h1">{{ recipe.title }}</h1>
+       <br>
+{#    <div class="recipe_container_text_star">#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#    </div>#}
+    <p class="recipe_p">
+       By: <a class="recipe_a" href="#" >
+              {{ recipe.author.profile.first_name }} {{ recipe.author.profile.last_name }}</a>
+    </p>
+              <hr class="border_line">
+       <br>
+        <h2 class="recipe_h2">Description:</h2>
+
+       <p class="recipe_p">
+          {{ recipe.description }}
+       </p>
+       <br>
+        <h2 class="recipe_h2">Detail:</h2>
+       <p class="recipe_p">
+          {{ recipe.ingredients }}
+       </p>
+       <br>
+
+       <hr class="border_line">
+
+
+    <div class="recipe_container_text_timing">
+     <div class="recipe_container_text_timing_time">
+        <h2 class="recipe_h2">Hands-on Time</h2>
+        <p class="recipe_p">{{ recipe.preparation_time }}</p>
+     </div>
+     <div class="recipe_container_text_timing_time">
+        <h2 class="recipe_h2">Total Time</h2>
+        <p>{{ recipe.total_time }}</p>
+     </div>
+    <div class="recipe_container_text_timing_time">
+            <h2 class="recipe_h2">Number of Portions</h2>
+            <p class="recipe_p">{{ recipe.number_of_portions }}</p>
+    </div>
+     <div class="recipe_container_text_timing_time">
+          <h2 class="recipe_h2">Upload Date</h2>
+          <p class="recipe_p">{{ recipe.upload_date |date:"F d, Y"}}</p>
+     </div>
+
+    <div class="recipe_container_text_timing_time">
+
+        <p class="recipe_p recipe_share_p">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri}}">
+                <i
+                class="fa fa-share-alt" style="font-size:40px;color:var(--persimmon)">
+                </i>
+            </a>
+        </p>
+    </div>
+
+
+     <div class="recipe_container_text_timing_time">
+         <p class="recipe_p">
+            <form action="{% url 'recipe:like_recipe' object.id  %}" method="POST">
+                {% csrf_token %}
+                <button type="submit", name="recipe_id",
+                        value="{{ object.id }}",
+                        class="recipe_like_btn" >
+                       <i class="fa fa-thumbs-up " style="font-size:35px;color:white" ></i> {{ total_likes }}</button>
+            </form>
+        </p>
+     </div>
+
+        <p> <i class="fa fa-eye" style="font-size:45px"></i> {% get_hit_count for object%} </p>
+
+    </div>
+
+    {% if object.author == user or user.is_staff %}
+        <button class="recipe_btn">
+            <a href="{% url 'recipe:update_recipe' object.id %}">
+                Update Recipe
+                <i class=" recipe_1 fa fa-arrow-right"></i>
+
+            </a>
+        </button>
+
+        <button class="recipe_delete_btn">
+            <a href="{% url 'recipe:delete_recipe' object.id %}">
+                Delete Recipe
+                <i class=" recipe_1 fa fa-close"></i>
+
+            </a>
+        </button>
+    {% endif %}
+
+   </div>
+  </div>
+
+
+
+    <div class="recipe_container">
+
+              <p class="recipe_p"> <strong>{{ num_comments }} Comments</strong> </p>
+
+                      <button type="button"
+                              style="border: none; outline:none;display: flex;align-items: center;
+                              background-color: green; padding: 9px 20px;
+                              border-radius: 5px;cursor: pointer;
+                              box-shadow:  0 10px 20px rgba(0, 0, 0,0.294); width: 170px" >
+                          <a href="{% url 'recipe:add-comment' object.id %}"
+                             style="color: white; font-size: 1rem;
+                             text-transform: uppercase; text-decoration: none">
+                              Add Comment</a>
+                      </button>
+          <br>
+           {% if not object.comments.all %}
+                <p class="no-comment-text">No comments added yet ..</p>
+           {% else %}
+                {% for comment in object.comments.all %}
+                            <hr class="border_line" style="width: 900px">
+
+                              <h6 class="recipe_p">
+                                {{ comment.commenter_name }}:
+                                  <br>
+                                <span style="font-size: 24px">{{ comment.comment_body }}</span>
+                              </h6>
+                              <p style="color: #868686">{{ comment.date_added|date:"F d, Y" }}</p>
+
+                              {% if request.user == comment.commenter_name %}
+                                  <p >
+                                  <button type="button"
+                                      style="border: none; outline:none;display: flex;align-items: center;
+                                      background-color: red; padding: 9px 20px;
+                                      border-radius: 5px;cursor: pointer;
+                                      box-shadow:  0 10px 20px rgba(0, 0, 0,0.294); width: 130px; margin-bottom: 20px" >
+                                            <a href="{% url 'recipe:delete-comment' comment.id %}"
+                                              style="color: white; font-size: 0.6rem;
+                                              text-transform: uppercase; text-decoration: none" >
+                                             Delete Comment
+                                            </a>
+                                  </button>
+                                  </p>
+                                         <hr class="border_line" style="width: 900px">
+
+                              {% endif %}
+
+                {% endfor %}
+           {% endif %}
+    </div>
+ </body>
+{# end of new html#}
+
+
+
+{##}
+{#<section style="background-color: #f7f6f6;">#}
+{#  <div class="recipe_container my-5 py-5 text-dark">#}
+{#    <div class="row d-flex justify-content-center">#}
+{#      <div class="col-md-12 col-lg-10 col-xl-8">#}
+{#            <div class="d-flex justify-content-between align-items-center mb-4">#}
+{#              <h4 class="text-dark mb-0">Comments</h4>#}
+{#            </div>#}
+{#          <p> <strong>{{ num_comments }} Comments</strong> </p>#}
+{#            <div class="d-flex justify-content-between mt-3">#}
+{#                  <button type="button" class="btn btn-success">#}
+{#                      <a style="text-decorations:none; color:inherit;" href="{% url 'recipe:add-comment' object.id %}">#}
+{#                          Add Comment</a>#}
+{#                  </button>#}
+{#            </div>#}
+{#      <br>#}
+{#       {% if not object.comments.all %}#}
+{#            <p>No comments added yet ..</p>#}
+{#       {% else %}#}
+{#            {% for comment in object.comments.all %}#}
+{#                <div class="card mb-3">#}
+{#                  <div class="card-body">#}
+{#                    <div class="d-flex flex-start">#}
+{#                      <div class="w-100">#}
+{#                        <div class="d-flex justify-content-between align-items-center mb-3">#}
+{#                          <h6 class="text-primary fw-bold mb-0">#}
+{#                            {{ comment.commenter_name }}#}
+{#                            <span class="text-dark ms-2">{{ comment.comment_body }}</span>#}
+{#                          </h6>#}
+{#                          <p class="mb-0">{{ comment.date_added }}</p>#}
+{#                        </div>#}
+{#                          {% if request.user == comment.commenter_name %}#}
+{#                            <div class="d-flex justify-content-between align-items-center">#}
+{#                              <p class="small mb-0" style="color: #aaa;">#}
+{#                                <a href="{% url 'recipe:delete-comment' comment.id %}" class="link-grey">Delete Comment</a> •#}
+{#                              </p>#}
+{#                            </div>#}
+{#                          {% endif %}#}
+{#                      </div>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#       {% endif %}#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
+{#</section>#}
+
+
+<!-- -->
+{% endblock content %}

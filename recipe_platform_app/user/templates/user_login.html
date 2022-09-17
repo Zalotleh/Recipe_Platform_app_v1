@@ -1,0 +1,52 @@
+{% extends 'recipes/navbar_footer.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static '/css/login.css' %}" />
+
+  <body>
+
+  <div class="message">
+
+      {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>Your account doesn't have access to this page. To proceed,
+                please log in with an account that has access.</p>
+        {% else %}
+            <p>Please login to see this page.</p>
+        {% endif %}
+    {% endif %}
+
+  </div>
+
+    <div class="center">
+      <h1>Login</h1>
+      <form method="post" action="{% url 'user:login' %}">
+                  {% csrf_token %}
+
+        <div class="txt_field">
+
+            {{ form.username }}
+          <label>Username</label>
+        </div>
+        <div class="txt_field">
+
+            {{ form.password }}
+          <label>Password</label>
+        </div>
+        <div class="pass">Forgot Password?</div>
+        <input type="submit" value="Login">
+        <div class="signup_link">
+          Not a member? <a href="{% url 'user:register' %}">Signup</a>
+        </div>
+      </form>
+    </div>
+
+  </body>
+
+
+{# <a href="{% url 'social:begin' 'github' %}" class="btn btn-link btn-lg active btn-block">Sign in with GitHub</a>#}
+
+{% endblock %}

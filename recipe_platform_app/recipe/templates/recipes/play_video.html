@@ -1,0 +1,28 @@
+{% extends 'recipes/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="recipe_container">
+        {% for v in vid_data %}
+            <div class="card my-4 border border-success box-element">
+                <div class="card-body">
+
+                    <iframe src="https://www.youtube.com/embed/{{ vid_data.id.videoId }}"></iframe>
+                    <h2 class="card-title">{{ vid_data.title }}</h2>
+                    <p class="card-text"><b>{{ vid_data.description }}</b></p>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+
+{% endblock %}
+
+{% block extend_footer %}
+
+
+
+
+{% endblock %}

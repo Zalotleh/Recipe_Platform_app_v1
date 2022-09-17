@@ -1,0 +1,210 @@
+{% extends "recipes/navbar_footer.html" %}
+{% load static %}
+{% load social_share %}
+{% load hitcount_tags %}
+{% load embed_video_tags %}
+<!-- -->
+{% block content %}
+    <link  rel="stylesheet" href="{% static '/css/product_detail.css/' %}">
+
+
+
+
+
+    {% if searched %}
+
+        <h2 style="color: #e34513; text-align: center;margin-top: 50px">You Searched For {{ searched }}</h2>
+
+        {% for recipe in recipes %}
+             <link rel="stylesheet" href="{% static '/css/recipe_detail.css' %}" />
+    <link
+   rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+   integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+   crossorigin="anonymous"
+  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+ <body class="recipe_body">
+    <div class="recipe_container">
+      {% if recipe.video and object.external_video %}
+                <video  class="recipe_video" controls>
+                    <source src="{{ recipe.video.url }}" type="video/mp4">
+                </video>
+                <br>
+                <br>
+                {% video recipe.external_video 'medium' %}
+            {% elif recipe.video %}
+                <video class="recipe_video" controls>
+                    <source src="{{ recipe.video.url }}" type="video/mp4">
+                </video>
+            {% elif recipe.external_video %}
+                {% video recipe.external_video 'medium' %}
+            {% endif %}
+
+   <div class="recipe_container_text">
+       <p class="recipe_p">
+
+          <a class="recipe_a" href="{% url 'recipe:category' recipe.category %}" >
+              {{ object.category }}</a>
+
+    </p>
+    <h1 class="recipe_h1">{{ recipe.title }}</h1>
+       <br>
+{#    <div class="recipe_container_text_star">#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#     <span class="fa fa-star checked"></span>#}
+{#    </div>#}
+    <p class="recipe_p">
+       By: <a class="recipe_a" href="#" >
+              {{ recipe.author.profile.first_name }} {{ recipe.author.profile.last_name }}</a>
+    </p>
+              <hr class="border_line">
+       <br>
+        <h2 class="recipe_h2">Description:</h2>
+
+       <p class="recipe_p">
+          {{ recipe.description }}
+       </p>
+       <br>
+        <h2 class="recipe_h2">Detail:</h2>
+       <p class="recipe_p">
+          {{ recipe.ingredients }}
+       </p>
+       <br>
+
+       <hr class="border_line">
+
+
+    <div class="recipe_container_text_timing">
+     <div class="recipe_container_text_timing_time">
+        <h2 class="recipe_h2">Hands-on Time</h2>
+        <p class="recipe_p">{{ recipe.preparation_time }}</p>
+     </div>
+     <div class="recipe_container_text_timing_time">
+        <h2 class="recipe_h2">Total Time</h2>
+        <p>{{ recipe.total_time }}</p>
+     </div>
+    <div class="recipe_container_text_timing_time">
+            <h2 class="recipe_h2">Number of Portions</h2>
+            <p class="recipe_p">{{ recipe.number_of_portions }}</p>
+    </div>
+     <div class="recipe_container_text_timing_time">
+          <h2 class="recipe_h2">Upload Date</h2>
+          <p class="recipe_p">{{ recipe.upload_date |date:"F d, Y"}}</p>
+     </div>
+
+    <div class="recipe_container_text_timing_time">
+
+        <p class="recipe_p recipe_share_p">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri}}">
+                <i
+                class="fa fa-share-alt" style="font-size:40px;color:var(--persimmon)">
+                </i>
+            </a>
+        </p>
+    </div>
+
+
+     <div class="recipe_container_text_timing_time">
+         <p class="recipe_p">
+            <form action="{% url 'recipe:like_recipe' recipe.id  %}" method="POST">
+                {% csrf_token %}
+                <button type="submit", name="recipe_id",
+                        value="{{ object.id }}",
+                        class="recipe_like_btn" >
+                       <i class="fa fa-thumbs-up " style="font-size:35px;color:white" ></i> {{ total_likes }}</button>
+            </form>
+        </p>
+     </div>
+
+        <p> <i class="fa fa-eye" style="font-size:45px"></i> {% get_hit_count for recipe%} </p>
+
+    </div>
+
+    {% if object.author == user or user.is_staff %}
+        <button class="recipe_btn">
+            <a href="{% url 'recipe:update_recipe' recipe.id %}">
+                Update Recipe
+                <i class=" recipe_1 fa fa-arrow-right"></i>
+
+            </a>
+        </button>
+
+        <button class="recipe_delete_btn">
+            <a href="{% url 'recipe:delete_recipe' recipe.id %}">
+                Delete Recipe
+                <i class=" recipe_1 fa fa-close"></i>
+
+            </a>
+        </button>
+    {% endif %}
+
+   </div>
+  </div>
+
+
+        {% endfor %}
+
+{#        product display#}
+
+            {% for product in products %}
+                <div class="card my-4 border border-dark">
+        <div class="card-body">
+
+            <img class=" border-dark" src="{% if product.image %} {{product.image.url}}
+                                          {% else %} {% static 'images/placeholder.png' %} {% endif %}"   >
+
+            <h2 class="card-title">{{ product.name }}</h2>
+            <p class="card-text"><b>Price:</b> ${{ product.price }}</p>
+            <h6 class="category">Category: <a href="{{ product.category.get_absolute_url }}">
+              {{ product.category }}
+            </a></h6>
+
+            <form  class="form" action="{% url 'cart:cart_add' product.id%}" method="post">
+                {{ cart_product_form }}
+                {% csrf_token %}
+                <input type="submit" value="Add to Cart">
+
+            </form>
+            <p class="card-text"><b>Description:</b> {{ product.description }}</p>
+
+
+
+  </div>
+
+</div>
+
+            {% endfor %}
+
+
+
+
+
+        {% for item in categories %}
+            <div class="col">
+                    <div class="card" style="width: 18rem;margin-bottom: 30px">
+                            <a href="{% url 'recipe:category' item %}" class="card-link"><h4 class="card-title">
+                                <img src="{{  item.image.url}}" class="card-img-top" alt="..."></h4></a>
+                        <div class="card-body">
+                            <a href="{% url 'recipe:category' item %}" class="card-link">
+                                <h4 class="card-title">{{ item }}</h4></a>
+                        </div>
+                    </div>
+
+            </div>
+        {% endfor %}
+
+
+    {% else %}
+        <h2>'No results found... try something else'</h2>
+    {% endif %}
+<!-- -->
+
+{% endblock content %}

@@ -1,0 +1,122 @@
+{% extends 'recipes/navbar_footer.html' %}
+{% load static %}
+{% block content %}
+{% block navbar_content %}
+
+    <link  rel="stylesheet" href="{% static '/css/cart_detail.css/' %}">
+
+
+    <!-- CSS only -->
+
+           <div class="form-inline my-2 my-lg-0">
+
+        <div class="cart_container">
+            {% with total_items=cart|length %}
+              {% if total_items  %}
+                  <a href="{% url 'cart:cart_detail' %}">
+                        <img  class="cart_icon" src="{% static 'images/cart.png' %}">
+                  </a>
+
+                  <p class="cart-total">{{ total_items }}</p>
+
+                  {% else %}
+
+                  <a href="#">
+                        <img  class="cart_icon" src="{% static 'images/cart.png' %}">
+                  </a>
+
+                  <p class="cart_total" >0</p>
+
+              {% endif %}
+            {% endwith %}
+
+
+      </div>
+
+
+
+      </div>
+
+{% endblock navbar_content %}
+
+
+
+    	<link  rel="stylesheet" href="{% static '/css/cart_detail.css' %}">
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element">
+                <a class=" continue_shopping btn btn-outline-dark" href="{% url 'store:store_page' %}">&#x2190; Continue Shopping</a>
+
+                <br>
+                <br>
+
+                <table class="table">
+                    <tr class="total">
+                        <th><h5 class="total">Total: <strong>${{ cart.get_total_price }}</strong></h5></th>
+                        <th>
+                            <a style="float: right; margin: 5px"
+                               class=" checkout btn btn-outline-success"
+                               href="#">Checkout</a>
+                        </th>
+
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <div class="box-element">
+                <div class="cart-row">
+                    <div style="flex:1"></div>
+                    <div style="flex:2"></div>
+
+                    <div style="flex:2"><strong>Item</strong></div>
+                    <div style="flex:1"><strong>Price</strong></div>
+                    <div style="flex:1"><strong>Quantity</strong></div>
+                    <div style="flex:1"><strong>Total</strong></div>
+                </div>
+                {% for item in cart %}
+                        <div class="cart-row">
+
+                         <div style="flex:1">
+                                <form class="remove" action=" {% url 'cart:cart_remove' item.product.id %}" method="post">
+                                    <input type="submit" value="Remove">
+                                    {% csrf_token %}
+                                </form>
+                        </div>
+                            <div style="flex:2">
+                                <a href="{{ item.product.get_absolute_url }}">
+                                    <img class="row-image"
+                                         src="{% if item.product.image %}{{ item.product.image.url }}
+                                        {% else %} {% static 'images/placeholder.png' %}{% endif %}">
+                                </a>
+                            </div>
+
+
+
+                            <div style="flex:2">{{ item.product.name}}</div>
+                            <div style="flex:1">{{ item.price}}</div>
+                            <div style="flex:1">
+                                <form class="update" action="{% url 'cart:cart_add' item.product.id %}" method="post">
+
+                                    {{ item.update_quantity_form.quantity }}
+                                    {{ item.update_quantity_form.override }}
+                                    {% csrf_token %}
+                                     <input type="submit" value="Update">
+
+                                </form>
+                            </div>
+                            <div style="flex:1">${{ item.total_price}}</div>
+
+                        </div>
+
+                    <hr>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock content %}

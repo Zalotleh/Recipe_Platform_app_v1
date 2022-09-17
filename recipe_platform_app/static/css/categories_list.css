@@ -1,0 +1,51 @@
+
+h1{
+    color: white;
+    text-align: center;
+    margin-top: 100px;
+
+}
+.recipe_container{
+  text-align: center;
+  margin: 80px 0px;
+  white-space: normal;
+}
+
+.images{
+    display: inline-grid;
+    width: 400px;
+    margin: 20px 10px;
+}
+
+.card-img{
+    max-width: 100%;
+    border-radius: 40%;
+    border: 5px double #E34513FF;
+}
+
+.card-title{
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 20px;
+}
+.card-link{
+    text-decoration: none;
+}
+
+.border_line1 {
+    border: none;
+    height: 1px;
+    background-color: #E34513FF;
+    margin-top: 100px;
+
+
+}
+
+
+.border_line2 {
+    border: none;
+    height: 1px;
+    background-color: #E34513FF;
+    margin-top: 10px;
+
+}

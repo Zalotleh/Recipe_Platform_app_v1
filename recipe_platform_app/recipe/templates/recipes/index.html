@@ -1,0 +1,129 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% block title %}<title>YUMOO!</title>{% endblock title %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="static/css/home_page.css" />
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+    <!-- navbar -->
+    <nav class = "navigationbar">
+      <div class = "navigation-top">
+        <a href = "{% url 'recipe:home_page' %}" class = "navigationbar-brand">
+          YUM<span>OO!</span>
+        </a>
+        <button type = "button" class = "navigationbar-toggler">
+          <i class = "fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class = "navigationbar-collapse">
+        <ul class = "navigationbar-nav">
+          <li class = "navigation-item">
+            <a href = "{% url 'recipe:home_page' %}" class = "navigation-link">home</a>
+          </li>
+          <li class = "navigation-item">
+            <a href = "{% url 'recipe:about' %}" class = "navigation-link">about</a>
+          </li>
+          <li class = "navigation-item">
+            <a href = "{% url 'recipe:recipe_list' %}" class = "navigation-link">Recipes list</a>
+          </li>
+          <li class = "navigation-item">
+            <a href = "{% url 'recipe:category_list' %}" class = "navigation-link">Categories</a>
+          </li>
+          <li class = "navigation-item">
+            <a href = "{% url 'recipe:create_recipe' %}" class = "navigation-link">Upload Video</a>
+          </li>
+          <li class = "navigation-item">
+            <a href = "{% url 'store:store_page' %}" class = "navigation-link">Shop</a>
+          </li>
+
+          <li  class = "navigation-item" >
+                  {% if user.is_authenticated %}
+
+                       <button class="login-home-page-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                          <a  href="{% url 'user:user_profile' %}" class = "navigation-link">
+                          <i class="fa fa-user" aria-hidden="true"></i>
+                              {% if user.first_name %}  Hello, {{ user.first_name }}!
+                        {% else %}Hello, {{ user.username }}!{% endif %}
+
+                        </a>
+                        </button>
+
+                  {% else %}
+                            <button class="login-home-page-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                                <a  href="{% url 'user:login' %}" class = "navigation-link">Sign in </a>
+                            </button>
+                  {% endif %}
+          </li>
+
+        </ul>
+      </div>
+
+
+    </nav>
+    <!-- end of navbar -->
+
+<body>
+    <!-- header -->
+    <div class = "header">
+      <!-- bg video -->
+
+        <video autoplay muted loop id = "bg-video">
+          <source src="media/videos/home_page_video.mp4" type="video/mp4" />
+        </video>
+
+      <!-- end of bg video -->
+
+      <div class = "recipe_container">
+        <!-- hero section -->
+        <div class = "hero-content">
+          <div class = "hero-content-change">
+            <div>
+              <span>
+                <i class = "fas fa-apple-alt"></i>
+              </span>
+              <h3>
+                <div class = "line"></div>
+                <span>It is all about food</span>
+                <div class = "line"> </div>
+              </h3>
+              <h1 class = "hero-lg-text">
+                  create, share, follow, learn
+              </h1>
+            </div>
+          </div>
+
+          <blockquote class = "hero-quote">
+            <span>
+              <i class = "fas fa-quote-left"></i>
+            </span>
+            A Recipe has no soul. You as the cook must bring soul to the recipe. Join YUMOO! NOW!
+            <span>
+              <i class = "fas fa-quote-right"></i>
+            </span>
+          </blockquote>
+
+          <button type = "button" class = "hero-btn">
+            <a href="{% url 'recipe:recipe_list' %}">Start Now</a>
+          </button>
+
+        </div>
+        <!-- end of hero section -->
+      </div>
+    </div>
+    <!-- end of header -->
+</header>
+
+    <script src = "{% static '/js/home_page.js/' %}"></script>
+  </body>
